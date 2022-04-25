@@ -10,7 +10,6 @@ const createNewArticle = (req, res) => {
         isConfidential
         } = req.body
     )
-    console.log(article);
     const saveArticle = new Article({
         hash: article.hash,
         authors: article.authors,

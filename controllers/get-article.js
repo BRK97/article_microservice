@@ -8,7 +8,6 @@ const getAllArticles = (req, res) =>{
 
 const getSingleArticle = (req, res) =>{
     const articleId = req.params.id;
-    console.log(articleId);
     articleDB.findById(articleId)
         .then((result) => {res.status(200).json(result)})
         .catch(err => {res.status(500).json({err})});

@@ -7,7 +7,6 @@ const makeNewArticle = (md5, sanitize) =>{
         getDescription,
         getSeconderyHeadlines,
         getParagraphs,
-        getImages,
         getTags,
         
         getIsPremium = false,
@@ -20,24 +19,20 @@ const makeNewArticle = (md5, sanitize) =>{
 
         let hash = makeHash();
 
-        if(!getImages){throw new Error("Article must have an Author")};
         if(!getAuthors){throw new Error("Article must have an Author")};
-        //if(!getMainCategory){throw new Error("Article must have a category")};
+        if(!getMainCategory){throw new Error("Article must have a category")};
         if(!getDescription){throw new Error("Article must have a description")};
-        //if(getDescription.length > 1){throw new Error("Description contains no useable text")};
-        //if(!getArticleMainHeadline){throw new Error("Article must have a valid main headline")};
-        //if(getArticleMainHeadline.length > 1){throw new Error("Main headline contains no useable text")};
-        
+        if(getDescription.length < 1){throw new Error("Description contains no useable text")};
+        if(!getMainTitle){throw new Error("Article must have a valid main headline")};
+        if(getMainTitle.length < 1){throw new Error("Main headline contains no useable text")};
         if(!getParagraphs){throw new Error("Article must have text")};
-        let sanitizedParagraphs = getParagraphs.forEach(paragraph => {
-            if(sanitize(paragraph).trim().length > 1){
-                sanitize(paragraph).trim();
-            }else{
-                throw new Error("paragraph contains no useable text");
-            }
+
+        // this is an example on how to sanitize any text in order to protect from XSS attacks
+        const sanitizedParagraphs = [];
+        getParagraphs.forEach(paragraph => {
+            sanitizedParagraphs.push(sanitize(paragraph).trim());
         });
-        
-        // if(getIsNSFW){};
+
 
         function makeHash(){
             return md5(
@@ -55,9 +50,7 @@ const makeNewArticle = (md5, sanitize) =>{
             mainTitle: getMainTitle,
             description: getDescription,
             seconderyHeadlines: getSeconderyHeadlines,
-            //paragraphs: sanitizedParagraphs,
-            paragraphs: getParagraphs,
-            images: getImages,
+            paragraphs: sanitizedParagraphs,
             tags: getTags,
             isNSFW: getIsNSFW,
             isPremium: getIsPremium, 

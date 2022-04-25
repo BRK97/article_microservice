@@ -9,7 +9,6 @@ const articleSchema = new Schema({
     description:{type: 'string',required: true},
     seconderyHeadlines:{type: 'array',required: false},
     paragraphs:{type: 'array',required: true},
-    images:{type: 'array',required: false},
     tags:{type: 'array',required: false},
     isNSFW:{type: 'boolean',required: true},
     isPremium:{type: 'boolean',required: true},
